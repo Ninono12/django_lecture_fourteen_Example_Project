@@ -1,3 +1,6 @@
+from urllib import request
+
+from django.db.models.fields import return_None
 from django.shortcuts import render, redirect, get_object_or_404
 from blog.forms import BlogPostModelForm
 from blog.models import BlogPost, BannerImage
@@ -49,9 +52,13 @@ def not_found(request):
     return render(request, template_name='404.html')
 
 def blog_post_delete(request, pk):
-    print("POST data:", request.POST)
-    blog = get_object_or_404(BlogPost, pk=pk)
-    if request.method == "POST":
-        blog.delete()
+    blog = BlogPost.objects.filter(id=pk).first()
+    if not blog:
         return redirect('blog_post_list')
-    return render(request, template_name='blog_delete_confirm.html', context={'blog': blog})
+
+    if request.method == 'POST':
+        blog.deleted = True  # ან blog.delete()
+        blog.save()
+        return redirect('blog_post_list')
+
+    return render(request, template_name='blog_post_confirm_delete.html', context={'blog': blog})
