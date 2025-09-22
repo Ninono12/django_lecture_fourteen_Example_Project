@@ -1,10 +1,35 @@
 {% extends "base.html" %}
 
 {% block title %}{{ blog.title }}{% endblock %}
+
 {% block content %}
     <h1>{{ blog.title }}</h1>
     <p>{{ blog.create_date }}</p>
     <p>{{ blog.active }}</p>
     <p>{{ blog.website }}</p>
     <p>{{ blog.text }}</p>
+    <a href="{% url 'blog_post_update' blog.pk %}">Edit</a>
+
+    {# Banner Image #}
+    {% if blog.banner_image and blog.banner_image.image %}
+        <div>
+            <img src="{{ blog.banner_image.image.url }}" alt="Banner" style="max-width: 400px;">
+        </div>
+    {% endif %}
+
+    {# Document File #}
+    {% if blog.document %}
+        <div>
+            <a href="{{ blog.document.url }}" download>Download Document</a>
+        </div>
+    {% endif %}
+
+    {# Extra Images #}
+    {% for image in blog.images.all %}
+        {% if image.image %}
+            <div>
+                <img src="{{ image.image.url }}" alt="Post Image" style="max-width: 200px;">
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
