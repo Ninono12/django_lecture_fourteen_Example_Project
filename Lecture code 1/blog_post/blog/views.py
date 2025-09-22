@@ -2,8 +2,8 @@ from urllib import request
 
 from django.db.models.fields import return_None
 from django.shortcuts import render, redirect, get_object_or_404
-from blog.forms import BlogPostModelForm
 from blog.models import BlogPost, BannerImage
+from blog.forms import BlogPostModelForm, UpdateBlogPostModelForm
 
 
 
